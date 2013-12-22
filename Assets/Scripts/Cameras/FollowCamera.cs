@@ -19,4 +19,14 @@ public class FollowCamera : MonoBehaviour {
         transform.position = target.transform.position - (rotation * offset);
         transform.LookAt(target.transform);
     }
+
+    //void SetCameraTarget(GameObject cameraTarget)
+    //{
+    //    Debug.Log("testsets");
+    //    Debug.Log(cameraTarget.name);
+    //    if (cameraTarget != null)
+    //    {
+    //        target = cameraTarget;
+    //    }
+    //}
 }

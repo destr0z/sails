@@ -76,6 +76,9 @@ public class NetworkManager : MonoBehaviour
 
     private void SpawnPlayer()
     {
-        Network.Instantiate(playerPrefab, Vector3.up * 5, Quaternion.identity, 0);
+        var player = Network.Instantiate(playerPrefab, Vector3.up * 5, Quaternion.identity, 0);
+
+        Camera.main.GetComponent<FollowCamera>().target = player as GameObject;
+        Camera.main.GetComponent<FollowCamera>().enabled = true;
     }
 }
