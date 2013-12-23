@@ -10,6 +10,7 @@ public class DungeonCamera : MonoBehaviour
     void Start()
     {
         offset = transform.position - target.transform.position;
+        Debug.Log("hmmmmmm");
     }
 
     void LateUpdate()

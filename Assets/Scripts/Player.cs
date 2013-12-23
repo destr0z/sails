@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class Player : MonoBehaviour
 {
@@ -10,6 +11,18 @@ public class Player : MonoBehaviour
     private float syncTime = 0f;
     private Vector3 syncStartPosition = Vector3.zero;
     private Vector3 syncEndPosition = Vector3.zero;
+
+    private Dictionary<string,int> inventory = new Dictionary<string,int>();
+
+    void OnGUI()
+    {
+        GUI.Box(new Rect(0, Screen.height - 100, Screen.width, 100), "Inventory");
+
+        foreach (var item in inventory)
+        {
+            GUI.Label(new Rect(0, Screen.height-80, 100, 20), item.Key +": "+item.Value);
+        }
+    }
 
     void OnSerializeNetworkView(BitStream stream, NetworkMessageInfo info)
     {
