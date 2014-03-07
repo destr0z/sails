@@ -81,11 +81,11 @@ public class Player : MonoBehaviour
 		}
 
         if (Input.GetKey (KeyCode.D)) {
-			transform.RotateAround(transform.position, rigidbody.transform.up, Time.deltaTime*90f);
+			transform.RotateAround(transform.position, new Vector3(0,1.0f,0), Time.deltaTime*90f);
 		}
 
 		if (Input.GetKey (KeyCode.A)) {
-			transform.RotateAround(transform.position, transform.up, -Time.deltaTime*90f);
+			transform.RotateAround(transform.position, new Vector3(0,1.0f,0), -Time.deltaTime*90f);
 		}
 		
 		if (Input.GetKeyUp (KeyCode.Q)) {
