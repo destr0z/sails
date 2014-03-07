@@ -11,20 +11,10 @@ public class Player : MonoBehaviour
     private float syncTime = 0f;
     private Vector3 syncStartPosition = Vector3.zero;
     private Vector3 syncEndPosition = Vector3.zero;
-
-    private Dictionary<string,int> inventory = new Dictionary<string,int>();
-
-    void OnGUI()
-    {
-        GUI.Box(new Rect(0, Screen.height - 100, Screen.width, 100), "Inventory");
-
-        foreach (var item in inventory)
-        {
-            GUI.Label(new Rect(0, Screen.height-80, 100, 20), item.Key +": "+item.Value);
-        }
-    }
-
-    void OnSerializeNetworkView(BitStream stream, NetworkMessageInfo info)
+	public float turnSmoothing = 15f;   // A smoothing value for turning the player.
+	public float speedDampTime = 0.1f;  // The damping for the speed parameter
+	
+	void OnSerializeNetworkView(BitStream stream, NetworkMessageInfo info)
     {
         Vector3 syncPosition = Vector3.zero;
         Vector3 syncVelocity = Vector3.zero;
@@ -71,24 +61,49 @@ public class Player : MonoBehaviour
 
     private void InputMovement()
     {
-        if (Input.GetKey(KeyCode.W))
-            rigidbody.MovePosition(rigidbody.position + Vector3.forward * speed * Time.deltaTime);
+		/*
+		if (Input.GetKey (KeyCode.W) && Input.GetKey (KeyCode.D)) {
+			var camDir = Camera.main.transform.TransformDirection(Vector3.forward);
+			camDir.y = 0.0f;
+			rigidbody.MovePosition(rigidbody.position + camDir * speed * Time.deltaTime);
 
-        if (Input.GetKey(KeyCode.S))
-            rigidbody.MovePosition(rigidbody.position - Vector3.forward * speed * Time.deltaTime);
+			rigidbody.transform.RotateAround(transform.position, transform.up, Time.deltaTime*90f);
+		}
+*/
 
-        if (Input.GetKey(KeyCode.D))
-            rigidbody.MovePosition(rigidbody.position + Vector3.right * speed * Time.deltaTime);
+		if (Input.GetKey (KeyCode.W)) {
+			var camDir = Camera.main.transform.TransformDirection(Vector3.forward);
+			camDir.y = 0.0f;
+			rigidbody.MovePosition(rigidbody.position + camDir * speed * Time.deltaTime);
+			//rigidbody.MovePosition(rigidbody.position + camDir * speed * Time.deltaTime);
+			//rigidbody.AddForce(rigidbody.position + camDir*90f);
+			//rigidbody.MovePosition(rigidbody.position + Input.GetAxis("Mouse X") * transform.forward*Time.deltaTime);
+		}
 
-        if (Input.GetKey(KeyCode.A))
-            rigidbody.MovePosition(rigidbody.position - Vector3.right * speed * Time.deltaTime);
+        if (Input.GetKey (KeyCode.D)) {
+			transform.RotateAround(transform.position, rigidbody.transform.up, Time.deltaTime*90f);
+		}
+
+		if (Input.GetKey (KeyCode.A)) {
+			transform.RotateAround(transform.position, transform.up, -Time.deltaTime*90f);
+		}
+		
+		if (Input.GetKeyUp (KeyCode.Q)) {
+			if(Camera.main.GetComponent<FollowCamera>().enabled) {
+				Camera.main.GetComponent<FollowCamera>().enabled = false;
+				Camera.main.GetComponent<MouseAimCamera>().enabled = true;
+			} else {
+				Camera.main.GetComponent<FollowCamera>().enabled = true;
+				Camera.main.GetComponent<MouseAimCamera>().enabled = false;
+			}
+		}       
     }
 
-    private void SyncedMovement()
-    {
-        syncTime += Time.deltaTime;
-
-        rigidbody.position = Vector3.Lerp(syncStartPosition, syncEndPosition, syncTime / syncDelay);
+	private void SyncedMovement()
+	{
+		syncTime += Time.deltaTime;
+		
+		rigidbody.position = Vector3.Lerp(syncStartPosition, syncEndPosition, syncTime / syncDelay);
     }
 
 
@@ -106,4 +121,18 @@ public class Player : MonoBehaviour
         if (networkView.isMine)
             networkView.RPC("ChangeColorTo", RPCMode.OthersBuffered, color);
     }
+
+	[RPC]
+	void UpdateStore(string message) 
+	{
+		Debug.Log ("test");
+		/*
+		if (inventory[store.StoreItem] != null) {
+			inventory[store.StoreItem] = store.StoreItemAmount;
+		} else {
+			inventory.Add (store.StoreItem, store.StoreItemAmount);
+		}
+		*/
+	}
+
 }

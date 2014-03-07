@@ -3,8 +3,8 @@ using System.Collections;
 
 public class NetworkManager : MonoBehaviour
 {
-    private const string typeName = "UniqueGameName";
-    private const string gameName = "RoomName";
+    private const string typeName = "DummyServer";
+    private const string gameName = "Stupid room";
 
     private bool isRefreshingHostList = false;
     private HostData[] hostList;
@@ -78,7 +78,14 @@ public class NetworkManager : MonoBehaviour
     {
         var player = Network.Instantiate(playerPrefab, Vector3.up * 5, Quaternion.identity, 0);
 
-        Camera.main.GetComponent<MouseAimCamera>().target = player as GameObject;
-        Camera.main.GetComponent<MouseAimCamera>().enabled = true;
+        //Camera.main.GetComponent<MouseAimCamera>().target = player as GameObject;
+        //Camera.main.GetComponent<MouseAimCamera>().enabled = true;
+		//Camera.main.GetComponent<DungeonCamera>().target = player as GameObject;
+		//Camera.main.GetComponent<DungeonCamera>().enabled = true;
+		Camera.main.GetComponent<FollowCamera>().target = player as GameObject;
+		Camera.main.GetComponent<MouseAimCamera>().target = player as GameObject;
+		Camera.main.GetComponent<FollowCamera>().enabled = true;
+		//Camera.main.GetComponent<MouseAimCamera>().enabled = true;
+
     }
 }

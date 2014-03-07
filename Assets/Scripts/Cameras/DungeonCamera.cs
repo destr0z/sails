@@ -10,10 +10,9 @@ public class DungeonCamera : MonoBehaviour
     void Start()
     {
         offset = transform.position - target.transform.position;
-        Debug.Log("hmmmmmm");
     }
 
-    void LateUpdate()
+    void Update()
     {
         Vector3 desiredPosition = target.transform.position + offset;
         Vector3 position = Vector3.Lerp(transform.position, desiredPosition, Time.deltaTime * damping);

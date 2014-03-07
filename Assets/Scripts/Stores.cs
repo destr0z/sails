@@ -10,4 +10,6 @@ public class Stores {
 		public string StoreItem { get; set; }
 		public int StoreItemAmount { get; set; }
 	}
+
+
 }

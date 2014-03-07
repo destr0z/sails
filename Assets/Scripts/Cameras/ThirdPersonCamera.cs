@@ -7,6 +7,7 @@ using System.Collections;
 public class ThirdPersonCamera : MonoBehaviour
 {
     public Transform cameraTransform;
+	public GameObject target;
     private Transform _target;
 
     // The distance in the x-z plane to the target
